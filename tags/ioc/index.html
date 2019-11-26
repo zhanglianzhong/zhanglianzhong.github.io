@@ -154,7 +154,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    17 分钟 读完 (大约 2532 个字)
+                    17 分钟 读完 (大约 2566 个字)
                 </span>
                 
                 
@@ -167,7 +167,7 @@
             
         </h1>
         <div class="content">
-            <h2 id="Spring—-IOC之深入理解IOC"><a href="#Spring—-IOC之深入理解IOC" class="headerlink" title="Spring— IOC之深入理解IOC"></a>Spring— IOC之深入理解IOC</h2><p>在一开始学习 Spring 的时候，我们就接触 IoC 了，作为 Spring 第一个最核心的概念，我们在解读它源码之前一定需要对其有深入的认识，本篇为Spring系列博客的第一篇博文，主要介绍 IoC 基本概念和各个组件。</p>
+            <p>在一开始学习 Spring 的时候，我们就接触 IoC 了，作为 Spring 第一个最核心的概念，我们在解读它源码之前一定需要对其有深入的认识，本篇为Spring系列博客的第一篇博文，主要介绍 IoC 基本概念和各个组件。</p>
 <h4 id="IOC理论"><a href="#IOC理论" class="headerlink" title="IOC理论"></a>IOC理论</h4><p>IoC 全称为 <code>Inversion of Control</code>，翻译为 “控制反转”，它还有一个别名为 DI（<code>Dependency Injection</code>）,即依赖注入。</p>
 <p>如何理解“控制反转”好呢？理解好它的关键在于我们需要回答如下四个问题：</p>
 <ol>
@@ -215,24 +215,28 @@
 <p>相比于构造器注入，setter 方式注入会显得比较宽松灵活些，它可以在任何时候进行注入（当然是在使用依赖对象之前），这就好比你可以先把自己想要的妹子想好了，然后再跟婚介公司打招呼，你可以要林志玲款式的，赵丽颖款式的，甚至凤姐哪款的，随意性较强。</p>
 <p><strong>接口方式注入</strong></p>
 <p>接口方式注入显得比较霸道，因为它需要被依赖的对象实现不必要的接口，带有侵入性。一般都不推荐这种方式。</p>
-<h2 id="各个组件"><a href="#各个组件" class="headerlink" title="各个组件"></a>各个组件</h2><img title="ClassPathXmlAC" alt="AC" class="class1 class2" src="http://bucket_name.qiniudn.com/static/images/spring/ClassPathXmlAC.png?imageView2/2/w/600">
+<h2 id="各个组件"><a href="#各个组件" class="headerlink" title="各个组件"></a>各个组件</h2><img title="ClassPathXmlAC" alt="AC" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/ClassPathXmlAC.png?imageView2/2/w/600">
 
 <p>该图为 ClassPathXmlApplicationContext 的类继承体系结构，虽然只有一部分，但是它基本上包含了 IOC 体系中大部分的核心类和接口。</p>
 <p>下面我们就针对这个图进行简单的拆分和补充说明。</p>
 <p><strong>Resource体系</strong></p>
 <p>Resource，对资源的抽象，它的每一个实现类都代表了一种资源的访问策略，如ClasspathResource 、 URLResource ，FileSystemResource 等。</p>
-<p><img src="./images/Resource.png" alt="resource"></p>
+<img title="Resource" alt="resource" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/Resource.png?imageView2/2/w/600">
+
 <p>有了资源，就应该有资源加载，Spring 利用 ResourceLoader 来进行统一资源加载.</p>
 <p><strong>BeanFactory 体系</strong></p>
 <p>BeanFactory 是一个非常纯粹的 bean 容器，它是 IOC 必备的数据结构，其中 BeanDefinition 是她的基本结构，它内部维护着一个 BeanDefinition map ，并可根据 BeanDefinition 的描述进行 bean 的创建和管理。</p>
-<p><img src="./images/bean_factory.png" alt="bean_factory"></p>
+<img title="bean_factory" alt="bean_factory" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/bean_factory.png?imageView2/2/w/600">
+
 <p>BeanFacoty 有三个直接子类 <code>ListableBeanFactory</code>、<code>HierarchicalBeanFactory</code> 和 <code>AutowireCapableBeanFactory</code>，<code>DefaultListableBeanFactory</code> 为最终默认实现，它实现了所有接口。</p>
 <p><strong>Beandefinition 体系</strong></p>
 <p>BeanDefinition 用来描述 Spring 中的 Bean 对象。</p>
-<p><img src="./images/Bean_Definition.png" alt="Bean_definition"></p>
+<img title="Bean_Definition" alt="Bean_Definition" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/Bean_Definition.png?imageView2/2/w/600">
+
 <p><strong>BeandefinitionReader体系</strong></p>
 <p>BeanDefinitionReader 的作用是读取 Spring 的配置文件的内容，并将其转换成 Ioc 容器内部的数据结构：BeanDefinition。</p>
-<p><img src="./images/BeanDefinitionReader.png" alt="BeanDefinitionReader"></p>
+<img title="BeanDefinitionReader" alt="BeanDefinitionReader" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/BeanDefinitionReader.png?imageView2/2/w/600">
+
 <p><strong>ApplicationContext体系</strong></p>
 <p>这个就是大名鼎鼎的 Spring 容器，它叫做应用上下文，与我们应用息息相关，它继承 BeanFactory，所以它是 BeanFactory 的扩展升级版，如果BeanFactory 是屌丝的话，那么 ApplicationContext 则是名副其实的高富帅。由于 ApplicationContext 的结构就决定了它与 BeanFactory 的不同，其主要区别有：</p>
 <ol>

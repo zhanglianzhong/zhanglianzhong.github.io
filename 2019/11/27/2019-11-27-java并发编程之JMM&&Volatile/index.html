@@ -11,7 +11,7 @@
 
 
     <meta name="description" content="电子技术在摩尔定律的指挥下，每隔一段时间就会登上一个新的台阶，现在的CPU早已是多核的天下。服务器拥有多核，个人电脑CPU多核也已是标配.在现代多核的CPU的背景下，催生了并发编程的趋势，并发编程的本质其实就是利用多线程技术，通过并发编程的形式可以将多核CPU的计算能力发挥到极致，性能得到提升。除此之外，面对复杂业务模型(如异步场景)，并行程序会比串行程序更适应业务需求，而并发编程更能吻合这种业务">
-<meta name="keywords" content="并发编程,volatile">
+<meta name="keywords" content="JMM,volatile">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java 并发编程之JMM你&amp;&amp;volatile">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;27&#x2F;2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&amp;&amp;Volatile&#x2F;index.html">
@@ -19,7 +19,7 @@
 <meta property="og:description" content="电子技术在摩尔定律的指挥下，每隔一段时间就会登上一个新的台阶，现在的CPU早已是多核的天下。服务器拥有多核，个人电脑CPU多核也已是标配.在现代多核的CPU的背景下，催生了并发编程的趋势，并发编程的本质其实就是利用多线程技术，通过并发编程的形式可以将多核CPU的计算能力发挥到极致，性能得到提升。除此之外，面对复杂业务模型(如异步场景)，并行程序会比串行程序更适应业务需求，而并发编程更能吻合这种业务">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;og_image.png">
-<meta property="og:updated_time" content="2019-11-27T11:18:11.218Z">
+<meta property="og:updated_time" content="2019-11-27T11:26:51.855Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;og_image.png">
 
@@ -138,7 +138,7 @@
                 <time class="level-item has-text-grey" datetime="2019-11-26T16:00:00.000Z">2019-11-27</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Spring/">Spring</a>
+                <a class="has-link-grey -link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
                 </div>
                 
                 
@@ -195,7 +195,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/volatile/" rel="tag">volatile</a>, <a class="has-link-grey -link" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag">并发编程</a>
+                    <a class="has-link-grey -link" href="/tags/JMM/" rel="tag">JMM</a>, <a class="has-link-grey -link" href="/tags/volatile/" rel="tag">volatile</a>
                 </div>
             </div>
         </div>
@@ -310,7 +310,7 @@
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            3
+                            4
                         </p>
                     </a>
                 </div>
@@ -430,12 +430,20 @@
                 <span class="level-item">Spring</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">1</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/git/">
             <span class="level-start">
                 <span class="level-item">git</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+            <span class="level-start">
+                <span class="level-item">并发编程</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -459,7 +467,7 @@
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/volatile/" style="font-size: 10px;">volatile</a> <a href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">中国式管理</a> <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/tags/%E6%9B%BE%E5%A3%AB%E5%BC%BA/" style="font-size: 10px;">曾士强</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 10px;">终端</a>
+        <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/JMM/" style="font-size: 10px;">JMM</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/volatile/" style="font-size: 10px;">volatile</a> <a href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">中国式管理</a> <a href="/tags/%E6%9B%BE%E5%A3%AB%E5%BC%BA/" style="font-size: 10px;">曾士强</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 10px;">终端</a>
     </div>
 </div>
     
@@ -485,7 +493,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-26T16:00:00.000Z">2019-11-27</time></div>
                     <a href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/" class="title has-link-black-ter is-size-6 has-text-weight-normal">java 并发编程之JMM你&amp;&amp;volatile</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Spring/">Spring</a>
+                        <a class="has-link-grey -link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
                     </p>
                 </div>
             </div>
@@ -602,6 +610,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/JMM/">
+                        <span class="tag">JMM</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/Spring/">
                         <span class="tag">Spring</span>
                         <span class="tag is-grey">1</span>
@@ -625,13 +640,6 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/">
                         <span class="tag">中国式管理</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
-                        <span class="tag">并发编程</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -685,7 +693,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-26T16:00:00.000Z">2019-11-27</time></div>
                     <a href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/" class="title has-link-black-ter is-size-6 has-text-weight-normal">java 并发编程之JMM你&amp;&amp;volatile</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Spring/">Spring</a>
+                        <a class="has-link-grey -link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
                     </p>
                 </div>
             </div>
@@ -802,6 +810,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/JMM/">
+                        <span class="tag">JMM</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/Spring/">
                         <span class="tag">Spring</span>
                         <span class="tag is-grey">1</span>
@@ -825,13 +840,6 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/">
                         <span class="tag">中国式管理</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
-                        <span class="tag">并发编程</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>

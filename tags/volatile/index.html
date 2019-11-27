@@ -7,19 +7,17 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Spring ioc之深入理解IOC - qinghaihu</title>
+<title>标签: volatile - qinghaihu</title>
 
 
-    <meta name="description" content="在一开始学习 Spring 的时候，我们就接触 IoC 了，作为 Spring 第一个最核心的概念，我们在解读它源码之前一定需要对其有深入的认识，本篇为Spring系列博客的第一篇博文，主要介绍 IoC 基本概念和各个组件。 IOC理论IoC 全称为 Inversion of Control，翻译为 “控制反转”，它还有一个别名为 DI（Dependency Injection）,即依赖注入。 如">
-<meta name="keywords" content="ioc,Spring">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Spring ioc之深入理解IOC">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;25&#x2F;2019-11-25-Spring%20ioc%E4%B9%8B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3ioc&#x2F;index.html">
+    <meta name="description" content="java架构师,技术博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="qinghaihu">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;volatile&#x2F;index.html">
 <meta property="og:site_name" content="qinghaihu">
-<meta property="og:description" content="在一开始学习 Spring 的时候，我们就接触 IoC 了，作为 Spring 第一个最核心的概念，我们在解读它源码之前一定需要对其有深入的认识，本篇为Spring系列博客的第一篇博文，主要介绍 IoC 基本概念和各个组件。 IOC理论IoC 全称为 Inversion of Control，翻译为 “控制反转”，它还有一个别名为 DI（Dependency Injection）,即依赖注入。 如">
+<meta property="og:description" content="java架构师,技术博客">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;og_image.png">
-<meta property="og:updated_time" content="2019-11-26T14:42:30.085Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;og_image.png">
 
@@ -79,7 +77,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/about_qinghaihu.jpeg" alt="Spring ioc之深入理解IOC" height="28">
+                <img src="/images/about_qinghaihu.jpeg" alt="qinghaihu" height="28">
             
             </a>
         </div>
@@ -128,14 +126,25 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    <div class="card-content">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/tags">标签</a></li>
+            <li class="is-active"><a href="#" aria-current="page">volatile</a></li>
+        </ul>
+        </nav>
+    </div>
+</div>
+
+    
 <div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-11-24T16:00:00.000Z">2019-11-25</time>
+                <time class="level-item has-text-grey" datetime="2019-11-26T16:00:00.000Z">2019-11-27</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/Spring/">Spring</a>
@@ -145,7 +154,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    17 分钟 读完 (大约 2566 个字)
+                    17 分钟 读完 (大约 2543 个字)
                 </span>
                 
                 
@@ -154,98 +163,41 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Spring ioc之深入理解IOC
+                <a class="has-link-black-ter" href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/">java 并发编程之JMM你&amp;&amp;volatile</a>
             
         </h1>
         <div class="content">
-            <p>在一开始学习 Spring 的时候，我们就接触 IoC 了，作为 Spring 第一个最核心的概念，我们在解读它源码之前一定需要对其有深入的认识，本篇为Spring系列博客的第一篇博文，主要介绍 IoC 基本概念和各个组件。</p>
-<h4 id="IOC理论"><a href="#IOC理论" class="headerlink" title="IOC理论"></a>IOC理论</h4><p>IoC 全称为 <code>Inversion of Control</code>，翻译为 “控制反转”，它还有一个别名为 DI（<code>Dependency Injection</code>）,即依赖注入。</p>
-<p>如何理解“控制反转”好呢？理解好它的关键在于我们需要回答如下四个问题：</p>
-<ol>
-<li>谁控制谁</li>
-<li>控制什么</li>
-<li>为何是反转</li>
-<li>哪些方面反转了</li>
-</ol>
-<p>在回答这四个问题之前，我们先看 IOC 的定义：</p>
+            <p>电子技术在摩尔定律的指挥下，每隔一段时间就会登上一个新的台阶，现在的CPU早已是多核的天下。服务器拥有多核，个人电脑<br>CPU多核也已是标配.在现代多核的CPU的背景下，催生了并发编程的趋势，并发编程的本质其实就是利用多线程技术，通过并发编<br>程的形式可以将多核CPU的计算能力发挥到极致，性能得到提升。除此之外，面对复杂业务模型(如异步场景)，并行程序会比串行<br>程序更适应业务需求，而并发编程更能吻合这种业务拆分。即使是单核处理器也支持多线程执行代码，CPU通过给每个线程分配CPU时间片来实现<br>这个机制。时间片是CPU分配给各个线程的时间，因为时间片非常短，所以CPU通过不停地切换线程执行，让我们感觉多个线程是同<br>时执行的，时间片一般是几十毫秒(ms)。<br>这里有必要强调下并发与并行的区别。实并发不等于并行:并发指的是多个任务交替进行，而并行则是指真正意义上的“同时进行”。际上，如果系统内只有一个CPU，而使用多线程时，那么真实系统环境下不能并行， 只能通过切换时间片的方式交替进行，而成为<br>并发执行任务。真正的并行也只能出现在拥有多个CPU的系统中。</p>
 <blockquote>
-<p>所谓 IOC ，就是由 Spring IOC 容器来负责对象的生命周期和对象之间的关系</p>
+<p>并发的优点:  </p>
+<ol>
+<li>充分利用多核CPU的计算能力;</li>
+<li>方便进行业务拆分，提升应用性能;</li>
+</ol>
 </blockquote>
-<p>上面这句话是整个 IoC 理论的核心。如何来理解这句话？我们引用一个例子来走阐述（看完该例子上面四个问题也就不是问题了）。</p>
-<p>已找女朋友为例（对于程序猿来说这个值得探究的问题）。一般情况下我们是如何来找女朋友的呢？首先我们需要根据自己的需求（漂亮、身材好、性格好）找一个妹子，然后到处打听她的兴趣爱好、微信、电话号码，然后各种投其所好送其所要，最后追到手。如下：</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 年轻小伙子</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">YoungMan</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> BeautifulGirl beautifulGirl;</span><br><span class="line"></span><br><span class="line">    YoungMan()&#123;</span><br><span class="line">        <span class="hljs-comment">// 可能你比较牛逼，指腹为婚</span></span><br><span class="line">        <span class="hljs-comment">// beautifulGirl = new BeautifulGirl();</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setBeautifulGirl</span><span class="hljs-params">(BeautifulGirl beautifulGirl)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.beautifulGirl = beautifulGirl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span></span>&#123;</span><br><span class="line">        YoungMan you = <span class="hljs-keyword">new</span> YoungMan();</span><br><span class="line">        BeautifulGirl beautifulGirl = <span class="hljs-keyword">new</span> BeautifulGirl(<span class="hljs-string">"你的各种条件"</span>);</span><br><span class="line">        beautifulGirl.setxxx(<span class="hljs-string">"各种投其所好"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">// 然后你有女票了</span></span><br><span class="line">        you.setBeautifulGirl(beautifulGirl);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这就是我们通常做事的方式，如果我们需要某个对象，一般都是采用这种直接创建的方式(<code>new BeautifulGirl()</code>)，这个过程复杂而又繁琐，而且我们必须要面对每个环节，同时使用完成之后我们还要负责销毁它，在这种情况下我们的对象与它所依赖的对象耦合在一起。</p>
-<p>其实我们需要思考一个问题？我们每次用到自己依赖的对象真的需要自己去创建吗？我们知道，我们依赖对象其实并不是依赖该对象本身，而是依赖它所提供的服务，只要在我们需要它的时候，它能够及时提供服务即可，至于它是我们主动去创建的还是别人送给我们的，其实并不是那么重要。再说了，相比于自己千辛万苦去创建它还要管理、善后而言，直接有人送过来是不是显得更加好呢？</p>
-<p>这个给我们送东西的“人” 就是 IoC，在上面的例子中，它就相当于一个婚介公司，作为一个婚介公司它管理着很多男男女女的资料，当我们需要一个女朋友的时候，直接跟婚介公司提出我们的需求，婚介公司则会根据我们的需求提供一个妹子给我们，我们只需要负责谈恋爱，生猴子就行了。你看，这样是不是很简单明了。</p>
-<p>诚然，作为婚介公司的 IoC 帮我们省略了找女朋友的繁杂过程，将原来的主动寻找变成了现在的被动接受（符合我们的要求），更加简洁轻便。你想啊，原来你还得鞍马前后，各种巴结，什么东西都需要自己去亲力亲为，现在好了，直接有人把现成的送过来，多么美妙的事情啊。所以，简单点说，IoC 的理念就是<strong>让别人为你服务</strong>.</p>
-<p>在没有引入 IoC 的时候，被注入的对象直接依赖于被依赖的对象，有了 IoC 后，两者及其他们的关系都是通过 Ioc Service Provider 来统一管理维护的。被注入的对象需要什么，直接跟 IoC Service Provider 打声招呼，后者就会把相应的被依赖对象注入到被注入的对象中，从而达到 IOC Service Provider 为被注入对象服务的目的。<strong>所以 IoC 就是这么简单！原来是需要什么东西自己去拿，现在是需要什么东西让别人（IOC Service Provider）送过来</strong></p>
-<p>现在在看上面那四个问题，答案就显得非常明显了:</p>
+<blockquote>
+<p> 并发带来问题:</p>
 <ol>
-<li><strong>谁控制谁</strong>：在传统的开发模式下，我们都是采用直接 new 一个对象的方式来创建对象，也就是说你依赖的对象直接由你自己控制，但是有了 IOC 容器后，则直接由 IoC 容器来控制。所以“谁控制谁”，当然是 IoC 容器控制对象。</li>
-<li><strong>控制什么</strong>：控制对象。</li>
-<li><strong>为何是反转</strong>：没有 IoC 的时候我们都是在自己对象中主动去创建被依赖的对象，这是正转。但是有了 IoC 后，所依赖的对象直接由 IoC 容器创建后注入到被注入的对象中，依赖的对象由原来的主动获取变成被动接受，所以是反转。</li>
-<li><strong>哪些方面反转了</strong>：所依赖对象的获取被反转了。</li>
+<li>高并发场景下，导致频繁的上下文切换</li>
+<li>临界区线程安全问题，</li>
+<li>并发控制下容易出现死锁，产生死锁就会造成系统功能不可用</li>
 </ol>
-<p>妹子有了，但是如何拥有妹子呢？这也是一门学问。</p>
+</blockquote>
+<h2 id="JMM模型"><a href="#JMM模型" class="headerlink" title="JMM模型"></a>JMM模型</h2><p>并发编程的难点，就在于对临界资源的访问控制。而并发控制的相关技术，如volatile、synchronized,lock的理解都与JMM(java memory model)息息相关。下图给出了JMM模型。</p>
+<img title="JMM_model" alt="JMM_model" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/juc/JMM模型.png?imageView2/2/w/600">
+
+<h4 id="主内存"><a href="#主内存" class="headerlink" title="主内存"></a>主内存</h4><p>主要存储的是Java实例对象，所有线程创建的实例对象都存放在主内存中，不管该实例对<br>象是成员变量还是方法中的本地变量(也称局部变量)，当然也包括了共享的类信息、常量、静<br>态变量。由于是共享数据区域，多条线程对同一个变量进行访问可能会发生线程安全问题。</p>
+<h4 id="工作内存"><a href="#工作内存" class="headerlink" title="工作内存"></a>工作内存</h4><p>主要存储当前方法的所有本地变量信息(工作内存中存储着主内存中的变量副本拷贝)，每<br>个线程只能访问自己的工作内存，即线程中的本地变量对其它线程是不可见的，<strong>就算是两个线<br>程执行的是同一段代码，它们也会各自在自己的工作内存中创建属于当前线程的本地变量</strong>，当<br>然也包括了字节码行号指示器、相关Native方法的信息。注意由于工作内存是每个线程的私有<br>数据，线程间无法相互访问工作内存，因此存储在工作内存的数据不存在线程安全问题。<br>根据JVM虚拟机规范主内存与工作内存的数据存储类型以及操作方式，对于一个实例对象<br>中的成员方法而言，如果方法中包含本地变量是基本数据类型<br>（boolean,byte,short,char,int,long,float,double），将直接存储在工作内存的帧栈结构中，<br>但倘若本地变量是引用类型，那么该变量的引用会存储在工作内存的帧栈中，而对象实例将存<br>储在主内存(共享数据区域，堆)中。但对于实例对象的成员变量，不管它是基本数据类型或者<br>包装类型(Integer、Double等)还是引用类型，都会被存储到堆区。至于static变量以及类本身<br>相关信息将会存储在主内存中。需要注意的是，在主内存中的实例对象可以被多线程共享，倘<br>若两个线程同时调用了同一个对象的同一个方法，那么两条线程会将要操作的数据拷贝一份到<br>自己的工作内存中，执行完成操作后才刷新到主内存。</p>
+<h3 id="并发编程的可见性、-原子性和有序性问题"><a href="#并发编程的可见性、-原子性和有序性问题" class="headerlink" title="并发编程的可见性、 原子性和有序性问题"></a>并发编程的可见性、 原子性和有序性问题</h3><h5 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h5><p>原子性指的是一个操作是不可中断的，即使是在多线程环境下，一个操作一旦开始就不会被其他线程影响。<br>在java中，对基本数据类型的变量的读取和赋值操作是原子性操作有点要注意的是，对于32位系统的来说，long类型数据和double类型数据(对于基本数据类型，byte,short,int,float,boolean,char读写是原子操作)，它们的读写并非原子性的，也就是说如果存在两条线程同时对long类型或者double类型的数据进行读写是存在相互干扰的，因为对于32位虚拟机来说，每次原子读写是32位的，而long和double则是64位的存储单元，这样会导致一个线程在写时，操作完前32位的原子操作后，轮到B线程（操作系统时间轮循）读取时，恰好只读取到了后32位的数据，这样可能会读取到一个既非原值又不是线程修改值的变量，它可能是“半个变量”的数值，即64位数据被两个线程分成了两次读取。但也不必太担心，因为读取到“半个变量”的情况比较少见，至少在目前的商用的虚拟机中，几乎都把64位的数据的读写操作作为原子操作来执行，因此对于这个问题不必太在意，知道这么回事即可。</p>
+<h5 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h5><p>可见性指的是当一个线程修改了某个共享变量的值，其他线程是否能够马上得知这个修改的值。对于串行程序来说，可见性是不存在的，因为在任何一个操作中修改了某个变量的值，后续的操作中都能读取这个变量值，并且是修改新值（可以认为单线程的工作内存与主内存是一致的）。<br>但在多线程环境中可就不一定了，前面我们分析过，由于线程对共享变量的操作都是线程拷贝到各自的工作内存进行操作后才写回到主内存中的，这就可能存在一个线程A修改了共享变量x的值，还未写回主内存时，另外一个线程B又对主内存中同一个共享变量x进行操作，但此时A线程工作内存中共享变量x对线程B来说并不可见，这种工作内存与主内存同步延迟现象就造成了可见性问题，另外指令重排以及编译器优化也可能导致可见性问题，通过前面的分析，我们知道无论是编译器优化还是处理器优化的重排现象，在多线程环境下，确实会导致程序轮序执行的问题，从而也就导致可见性问题。</p>
+<h5 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h5><p>有序性是指对于单线程的执行代码，我们总是认为代码的执行是按顺序依次执行的，这样的理解并没有毛病，毕竟对于单线程而言确实如此（CPU在进行指令重排时，能保证在单线程环境下，执行结果不变）。但对于多线程环境，则可能出现乱序现象，因为程序编译成机器码指令后可能会出现指令重排现象，重排后的指令与原指令的顺序未必一致，要明白的是，在Java程序中，倘若在本线程内，所有操作都视为有序行为，如果是多线程环境下，<strong>一个线程中观察另外一个线程，所有操作都是无序的</strong>，前半句指的是单线程内保证串行语义执行的一致性，后半句则指指令重排现象和工作内存与主内存同步延迟现象。</p>
+<h2 id="volatile关键字解析"><a href="#volatile关键字解析" class="headerlink" title="volatile关键字解析"></a>volatile关键字解析</h2><p>volatile是Java虚拟机提供的轻量级的同步机制。volatile关键字有如下两个作用</p>
 <ol>
-<li>可能你比较牛逼，刚刚出生的时候就指腹为婚了。</li>
-<li>大多数情况我们还是会考虑自己想要什么样的妹子，所以还是需要向婚介公司打招呼的。</li>
-<li>还有一种情况就是，你根本就不知道自己想要什么样的妹子，直接跟婚介公司说，我就要一个这样的妹子。</li>
+<li>保证被volatile修饰的共享变量对所有线程总是可见的，也就是当一个线程修改了一<br>个被volatile修饰共享变量的值，新值总是可以被其他线程立即得知。</li>
+<li>禁止指令重排序优化。</li>
 </ol>
-<p>所以，IOC Service Provider 为被注入对象提供被依赖对象也有如下几种方式：构造方法注入、stter方法注入、接口注入。</p>
-<p><strong>构造器注入</strong></p>
-<p>构造器注入，顾名思义就是被注入的对象通过在其构造方法中声明依赖对象的参数列表，让外部知道它需要哪些依赖对象。</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">YoungMan(BeautifulGirl beautifulGirl)&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.beautifulGirl = beautifulGirl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可见性的实现，是基于java虚拟机将volatile关键字转化为lock汇编指令，该指令会将缓存行加锁，在缓存一致性协议作用下，新的线程操作临界变量时，必须先将主内存中的数据更新到工作内存。</p>
 
-<p>构造器注入方式比较直观，对象构造完毕后就可以直接使用，这就好比你出生你家里就给你指定了你媳妇。</p>
-<p><strong>setter 方法注入</strong></p>
-<p>对于 JavaBean 对象而言，我们一般都是通过 getter 和 setter 方法来访问和设置对象的属性。所以，当前对象只需要为其所依赖的对象提供相对应的 setter 方法，就可以通过该方法将相应的依赖对象设置到被注入对象中。如下：</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">YoungMan</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> BeautifulGirl beautifulGirl;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setBeautifulGirl</span><span class="hljs-params">(BeautifulGirl beautifulGirl)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.beautifulGirl = beautifulGirl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>相比于构造器注入，setter 方式注入会显得比较宽松灵活些，它可以在任何时候进行注入（当然是在使用依赖对象之前），这就好比你可以先把自己想要的妹子想好了，然后再跟婚介公司打招呼，你可以要林志玲款式的，赵丽颖款式的，甚至凤姐哪款的，随意性较强。</p>
-<p><strong>接口方式注入</strong></p>
-<p>接口方式注入显得比较霸道，因为它需要被依赖的对象实现不必要的接口，带有侵入性。一般都不推荐这种方式。</p>
-<h2 id="各个组件"><a href="#各个组件" class="headerlink" title="各个组件"></a>各个组件</h2><img title="ClassPathXmlAC" alt="AC" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/ClassPathXmlAC.png?imageView2/2/w/600">
-
-<p>该图为 ClassPathXmlApplicationContext 的类继承体系结构，虽然只有一部分，但是它基本上包含了 IOC 体系中大部分的核心类和接口。</p>
-<p>下面我们就针对这个图进行简单的拆分和补充说明。</p>
-<p><strong>Resource体系</strong></p>
-<p>Resource，对资源的抽象，它的每一个实现类都代表了一种资源的访问策略，如ClasspathResource 、 URLResource ，FileSystemResource 等。</p>
-<img title="Resource" alt="resource" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/Resource.png?imageView2/2/w/600">
-
-<p>有了资源，就应该有资源加载，Spring 利用 ResourceLoader 来进行统一资源加载.</p>
-<p><strong>BeanFactory 体系</strong></p>
-<p>BeanFactory 是一个非常纯粹的 bean 容器，它是 IOC 必备的数据结构，其中 BeanDefinition 是她的基本结构，它内部维护着一个 BeanDefinition map ，并可根据 BeanDefinition 的描述进行 bean 的创建和管理。</p>
-<img title="bean_factory" alt="bean_factory" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/bean_factory.png?imageView2/2/w/600">
-
-<p>BeanFacoty 有三个直接子类 <code>ListableBeanFactory</code>、<code>HierarchicalBeanFactory</code> 和 <code>AutowireCapableBeanFactory</code>，<code>DefaultListableBeanFactory</code> 为最终默认实现，它实现了所有接口。</p>
-<p><strong>Beandefinition 体系</strong></p>
-<p>BeanDefinition 用来描述 Spring 中的 Bean 对象。</p>
-<img title="Bean_Definition" alt="Bean_Definition" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/Bean_Definition.png?imageView2/2/w/600">
-
-<p><strong>BeandefinitionReader体系</strong></p>
-<p>BeanDefinitionReader 的作用是读取 Spring 的配置文件的内容，并将其转换成 Ioc 容器内部的数据结构：BeanDefinition。</p>
-<img title="BeanDefinitionReader" alt="BeanDefinitionReader" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/spring/BeanDefinitionReader.png?imageView2/2/w/600">
-
-<p><strong>ApplicationContext体系</strong></p>
-<p>这个就是大名鼎鼎的 Spring 容器，它叫做应用上下文，与我们应用息息相关，它继承 BeanFactory，所以它是 BeanFactory 的扩展升级版，如果BeanFactory 是屌丝的话，那么 ApplicationContext 则是名副其实的高富帅。由于 ApplicationContext 的结构就决定了它与 BeanFactory 的不同，其主要区别有：</p>
-<ol>
-<li>继承 MessageSource，提供国际化的标准访问策略。</li>
-<li>继承 ApplicationEventPublisher ，提供强大的事件机制。</li>
-<li>扩展 ResourceLoader，可以用来加载多个 Resource，可以灵活访问不同的资源。</li>
-<li>对 Web 应用的支持。</li>
-</ol>
-
-        </div>
-        
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/Spring/" rel="tag">Spring</a>, <a class="has-link-grey -link" href="/tags/ioc/" rel="tag">ioc</a>
-                </div>
-            </div>
         </div>
         
         
@@ -255,57 +207,9 @@
 
 
 
-<div class="card">
-    <div class="card-content">
-        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
-        <div class="buttons is-centered">
-            
-                
-<a class="button is-info donate">
-    <span class="icon is-small">
-        <i class="fab fa-alipay"></i>
-    </span>
-    <span>支付宝</span>
-    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
-</a>
-
-                
-                
-<a class="button is-success donate">
-    <span class="icon is-small">
-        <i class="fab fa-weixin"></i>
-    </span>
-    <span>微信</span>
-    <div class="qrcode"><img src="/images/wechat_pay.jpg" alt="微信"></div>
-</a>
-
-                
-        </div>
-    </div>
-</div>
 
 
 
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">java 并发编程之JMM你&amp;&amp;volatile</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/11/23/2019-11-23-Git%E6%8C%87%E4%BB%A4%E6%95%B4%E7%90%86/">
-                <span class="level-item">Git指令整理</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
 
 
 </div>
@@ -922,11 +826,11 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/about_qinghaihu.jpeg" alt="Spring ioc之深入理解IOC" height="28">
+                    <img src="/images/about_qinghaihu.jpeg" alt="qinghaihu" height="28">
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 qinghaihu&nbsp;
+                &copy; 2019 Zhang Lianzhong&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 

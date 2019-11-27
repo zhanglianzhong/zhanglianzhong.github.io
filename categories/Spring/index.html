@@ -145,6 +145,81 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-11-26T16:00:00.000Z">2019-11-27</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Spring/">Spring</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    17 分钟 读完 (大约 2543 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/">java 并发编程之JMM你&amp;&amp;volatile</a>
+            
+        </h1>
+        <div class="content">
+            <p>电子技术在摩尔定律的指挥下，每隔一段时间就会登上一个新的台阶，现在的CPU早已是多核的天下。服务器拥有多核，个人电脑<br>CPU多核也已是标配.在现代多核的CPU的背景下，催生了并发编程的趋势，并发编程的本质其实就是利用多线程技术，通过并发编<br>程的形式可以将多核CPU的计算能力发挥到极致，性能得到提升。除此之外，面对复杂业务模型(如异步场景)，并行程序会比串行<br>程序更适应业务需求，而并发编程更能吻合这种业务拆分。即使是单核处理器也支持多线程执行代码，CPU通过给每个线程分配CPU时间片来实现<br>这个机制。时间片是CPU分配给各个线程的时间，因为时间片非常短，所以CPU通过不停地切换线程执行，让我们感觉多个线程是同<br>时执行的，时间片一般是几十毫秒(ms)。<br>这里有必要强调下并发与并行的区别。实并发不等于并行:并发指的是多个任务交替进行，而并行则是指真正意义上的“同时进行”。际上，如果系统内只有一个CPU，而使用多线程时，那么真实系统环境下不能并行， 只能通过切换时间片的方式交替进行，而成为<br>并发执行任务。真正的并行也只能出现在拥有多个CPU的系统中。</p>
+<blockquote>
+<p>并发的优点:  </p>
+<ol>
+<li>充分利用多核CPU的计算能力;</li>
+<li>方便进行业务拆分，提升应用性能;</li>
+</ol>
+</blockquote>
+<blockquote>
+<p> 并发带来问题:</p>
+<ol>
+<li>高并发场景下，导致频繁的上下文切换</li>
+<li>临界区线程安全问题，</li>
+<li>并发控制下容易出现死锁，产生死锁就会造成系统功能不可用</li>
+</ol>
+</blockquote>
+<h2 id="JMM模型"><a href="#JMM模型" class="headerlink" title="JMM模型"></a>JMM模型</h2><p>并发编程的难点，就在于对临界资源的访问控制。而并发控制的相关技术，如volatile、synchronized,lock的理解都与JMM(java memory model)息息相关。下图给出了JMM模型。</p>
+<img title="JMM_model" alt="JMM_model" class="class1 class2" src="http://q1kv5hk84.bkt.clouddn.com/static/images/juc/JMM模型.png?imageView2/2/w/600">
+
+<h4 id="主内存"><a href="#主内存" class="headerlink" title="主内存"></a>主内存</h4><p>主要存储的是Java实例对象，所有线程创建的实例对象都存放在主内存中，不管该实例对<br>象是成员变量还是方法中的本地变量(也称局部变量)，当然也包括了共享的类信息、常量、静<br>态变量。由于是共享数据区域，多条线程对同一个变量进行访问可能会发生线程安全问题。</p>
+<h4 id="工作内存"><a href="#工作内存" class="headerlink" title="工作内存"></a>工作内存</h4><p>主要存储当前方法的所有本地变量信息(工作内存中存储着主内存中的变量副本拷贝)，每<br>个线程只能访问自己的工作内存，即线程中的本地变量对其它线程是不可见的，<strong>就算是两个线<br>程执行的是同一段代码，它们也会各自在自己的工作内存中创建属于当前线程的本地变量</strong>，当<br>然也包括了字节码行号指示器、相关Native方法的信息。注意由于工作内存是每个线程的私有<br>数据，线程间无法相互访问工作内存，因此存储在工作内存的数据不存在线程安全问题。<br>根据JVM虚拟机规范主内存与工作内存的数据存储类型以及操作方式，对于一个实例对象<br>中的成员方法而言，如果方法中包含本地变量是基本数据类型<br>（boolean,byte,short,char,int,long,float,double），将直接存储在工作内存的帧栈结构中，<br>但倘若本地变量是引用类型，那么该变量的引用会存储在工作内存的帧栈中，而对象实例将存<br>储在主内存(共享数据区域，堆)中。但对于实例对象的成员变量，不管它是基本数据类型或者<br>包装类型(Integer、Double等)还是引用类型，都会被存储到堆区。至于static变量以及类本身<br>相关信息将会存储在主内存中。需要注意的是，在主内存中的实例对象可以被多线程共享，倘<br>若两个线程同时调用了同一个对象的同一个方法，那么两条线程会将要操作的数据拷贝一份到<br>自己的工作内存中，执行完成操作后才刷新到主内存。</p>
+<h3 id="并发编程的可见性、-原子性和有序性问题"><a href="#并发编程的可见性、-原子性和有序性问题" class="headerlink" title="并发编程的可见性、 原子性和有序性问题"></a>并发编程的可见性、 原子性和有序性问题</h3><h5 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h5><p>原子性指的是一个操作是不可中断的，即使是在多线程环境下，一个操作一旦开始就不会被其他线程影响。<br>在java中，对基本数据类型的变量的读取和赋值操作是原子性操作有点要注意的是，对于32位系统的来说，long类型数据和double类型数据(对于基本数据类型，byte,short,int,float,boolean,char读写是原子操作)，它们的读写并非原子性的，也就是说如果存在两条线程同时对long类型或者double类型的数据进行读写是存在相互干扰的，因为对于32位虚拟机来说，每次原子读写是32位的，而long和double则是64位的存储单元，这样会导致一个线程在写时，操作完前32位的原子操作后，轮到B线程（操作系统时间轮循）读取时，恰好只读取到了后32位的数据，这样可能会读取到一个既非原值又不是线程修改值的变量，它可能是“半个变量”的数值，即64位数据被两个线程分成了两次读取。但也不必太担心，因为读取到“半个变量”的情况比较少见，至少在目前的商用的虚拟机中，几乎都把64位的数据的读写操作作为原子操作来执行，因此对于这个问题不必太在意，知道这么回事即可。</p>
+<h5 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h5><p>可见性指的是当一个线程修改了某个共享变量的值，其他线程是否能够马上得知这个修改的值。对于串行程序来说，可见性是不存在的，因为在任何一个操作中修改了某个变量的值，后续的操作中都能读取这个变量值，并且是修改新值（可以认为单线程的工作内存与主内存是一致的）。<br>但在多线程环境中可就不一定了，前面我们分析过，由于线程对共享变量的操作都是线程拷贝到各自的工作内存进行操作后才写回到主内存中的，这就可能存在一个线程A修改了共享变量x的值，还未写回主内存时，另外一个线程B又对主内存中同一个共享变量x进行操作，但此时A线程工作内存中共享变量x对线程B来说并不可见，这种工作内存与主内存同步延迟现象就造成了可见性问题，另外指令重排以及编译器优化也可能导致可见性问题，通过前面的分析，我们知道无论是编译器优化还是处理器优化的重排现象，在多线程环境下，确实会导致程序轮序执行的问题，从而也就导致可见性问题。</p>
+<h5 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h5><p>有序性是指对于单线程的执行代码，我们总是认为代码的执行是按顺序依次执行的，这样的理解并没有毛病，毕竟对于单线程而言确实如此（CPU在进行指令重排时，能保证在单线程环境下，执行结果不变）。但对于多线程环境，则可能出现乱序现象，因为程序编译成机器码指令后可能会出现指令重排现象，重排后的指令与原指令的顺序未必一致，要明白的是，在Java程序中，倘若在本线程内，所有操作都视为有序行为，如果是多线程环境下，<strong>一个线程中观察另外一个线程，所有操作都是无序的</strong>，前半句指的是单线程内保证串行语义执行的一致性，后半句则指指令重排现象和工作内存与主内存同步延迟现象。</p>
+<h2 id="volatile关键字解析"><a href="#volatile关键字解析" class="headerlink" title="volatile关键字解析"></a>volatile关键字解析</h2><p>volatile是Java虚拟机提供的轻量级的同步机制。volatile关键字有如下两个作用</p>
+<ol>
+<li>保证被volatile修饰的共享变量对所有线程总是可见的，也就是当一个线程修改了一<br>个被volatile修饰共享变量的值，新值总是可以被其他线程立即得知。</li>
+<li>禁止指令重排序优化。</li>
+</ol>
+<p>可见性的实现，是基于java虚拟机将volatile关键字转化为lock汇编指令，该指令会将缓存行加锁，在缓存一致性协议作用下，新的线程操作临界变量时，必须先将主内存中的数据更新到工作内存。</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-11-24T16:00:00.000Z">2019-11-25</time>
                 
                 <div class="level-item">
@@ -306,7 +381,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            3
+                            4
                         </p>
                     </a>
                 </div>
@@ -330,7 +405,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            6
+                            8
                         </p>
                     </a>
                 </div>
@@ -438,7 +513,7 @@
                 <span class="level-item">Spring</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">1</span>
+                <span class="level-item tag">2</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/git/">
@@ -467,7 +542,7 @@
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">中国式管理</a> <a href="/tags/%E6%9B%BE%E5%A3%AB%E5%BC%BA/" style="font-size: 10px;">曾士强</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 10px;">终端</a>
+        <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/ioc/" style="font-size: 10px;">ioc</a> <a href="/tags/volatile/" style="font-size: 10px;">volatile</a> <a href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">中国式管理</a> <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/tags/%E6%9B%BE%E5%A3%AB%E5%BC%BA/" style="font-size: 10px;">曾士强</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 10px;">终端</a>
     </div>
 </div>
     
@@ -479,6 +554,25 @@
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="java 并发编程之JMM你&amp;&amp;volatile">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-26T16:00:00.000Z">2019-11-27</time></div>
+                    <a href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/" class="title has-link-black-ter is-size-6 has-text-weight-normal">java 并发编程之JMM你&amp;&amp;volatile</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Spring/">Spring</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -554,7 +648,7 @@
                     <span class="level-item">十一月 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -605,8 +699,22 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/volatile/">
+                        <span class="tag">volatile</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/">
                         <span class="tag">中国式管理</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+                        <span class="tag">并发编程</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -649,6 +757,25 @@
         
         <article class="media">
             
+            <a href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="java 并发编程之JMM你&amp;&amp;volatile">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-26T16:00:00.000Z">2019-11-27</time></div>
+                    <a href="/2019/11/27/2019-11-27-java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BJMM&&Volatile/" class="title has-link-black-ter is-size-6 has-text-weight-normal">java 并发编程之JMM你&amp;&amp;volatile</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Spring/">Spring</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2019/11/25/2019-11-25-Spring%20ioc%E4%B9%8B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3ioc/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring ioc之深入理解IOC">
@@ -721,7 +848,7 @@
                     <span class="level-item">十一月 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -772,8 +899,22 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/volatile/">
+                        <span class="tag">volatile</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/%E4%B8%AD%E5%9B%BD%E5%BC%8F%E7%AE%A1%E7%90%86/">
                         <span class="tag">中国式管理</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+                        <span class="tag">并发编程</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
